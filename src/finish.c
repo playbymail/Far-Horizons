@@ -417,6 +417,12 @@ int finishCommand(int argc, char *argv[]) {
             old_tech_level = species->tech_level[tech];
             new_tech_level = old_tech_level;
 
+            /* No cap unless heavy research below sets one. This must be
+             * initialized before the experience_points == 0 short-circuit so the
+             * private-sector 1-in-6 increase (see doc/rules: a tech level can rise
+             * without spending funds on research) is never clamped by stale data. */
+            max_tech_level = 9999;
+
             experience_points = species->tech_eps[tech];
             if (experience_points == 0) {
                 goto check_random;
@@ -432,8 +438,6 @@ int finishCommand(int argc, char *argv[]) {
             /* When extremely large amounts are spent on research, tech level increases are sometimes excessive.  Set a limit. */
             if (old_tech_level > 50) {
                 max_tech_level = j + 1;
-            } else {
-                max_tech_level = 9999;
             }
 
             /* Allocate half of the calculated increase NON-RANDOMLY. */
