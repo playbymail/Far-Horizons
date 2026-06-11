@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[i], "finish") == 0) {
             return finishCommand(argc - i, argv + i);
         } else if (strcmp(argv[i], "import") == 0) {
-            return importCommand(argc - 1, argv + 1);
+            return importCommand(argc - i, argv + i);
         } else if (strcmp(argv[i], "inspect") == 0) {
             printf("inspect: sizeof(int)                   == %5d\n", (int) sizeof(int));
             printf("inspect: sizeof(long)                  == %5d\n", (int) sizeof(long));
@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[i], "update") == 0) {
             return updateCommand(argc - i, argv + i);
         } else if (strcmp(argv[i], "version") == 0) {
-            return versionCommand(argc - 1, argv+1);
+            return versionCommand(argc - i, argv + i);
         } else {
             fprintf(stderr, "fh: unknown option '%s'\n", argv[i]);
             return 2;

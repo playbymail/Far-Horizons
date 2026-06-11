@@ -43,12 +43,12 @@ int versionCommand(int argc, char *argv[]) {
             fprintf(stderr, "       display version of this program\n");
             return 2;
         } else {
-            fprintf(stderr, "error: unknown option '%s%s%s'\n", opt, val ? "=" : "", val);
+            fprintf(stderr, "error: unknown option '%s%s%s'\n", opt, val ? "=" : "", val ? val : "");
             return 2;
         }
     }
 
-    printf("7.5.11\n");
+    printf("7.5.12\n");
 
-    return 2;
+    return 0;
 }
