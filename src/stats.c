@@ -97,7 +97,7 @@ int statsCommand(int argc, char *argv[]) {
     long total_production;
     long total_tonnage;
 
-    long totalBankedEconUnits, minBankedEconUnits, maxBankedEconUnits, avgBankedEconUnits;
+    long totalBankedEconUnits = 0, minBankedEconUnits = 1000000000, maxBankedEconUnits = 0, avgBankedEconUnits;
 
     int nampla_index = 0;
     int ship_index = 0;
@@ -312,16 +312,11 @@ int statsCommand(int argc, char *argv[]) {
         printf("%8ld%8ld", total_offensive_power, total_defensive_power);
 
         totalBankedEconUnits += species->econ_units;
-        if (species_number == 1) {
+        if (minBankedEconUnits > species->econ_units) {
             minBankedEconUnits = species->econ_units;
+        }
+        if (maxBankedEconUnits < species->econ_units) {
             maxBankedEconUnits = species->econ_units;
-        } else {
-            if (minBankedEconUnits > species->econ_units) {
-                minBankedEconUnits = species->econ_units;
-            }
-            if (maxBankedEconUnits < species->econ_units) {
-                maxBankedEconUnits = species->econ_units;
-            }
         }
         printf("%9d\n", species->econ_units);
     }

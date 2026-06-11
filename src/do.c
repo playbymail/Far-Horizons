@@ -857,6 +857,7 @@ void do_BUILD_command(int continuing_construction, int interspecies_construction
 
     /* Search all ships for name. */
     found = FALSE;
+    new_ship = FALSE;
     ship = ship_base - 1;
     unused_ship_available = FALSE;
     for (ship_index = 0; ship_index < species->num_ships; ship_index++) {
@@ -907,6 +908,11 @@ void do_BUILD_command(int continuing_construction, int interspecies_construction
         }
 
         if (unused_ship_available) {
+            /* Reusing a freed slot still counts as a new ship: if the order is
+             * later rejected, delete_ship() reverts the overwritten slot back to
+             * its unused (pn == 99) state. The (!unused_ship_available) guard at
+             * the ship-count bump below keeps this from inflating num_ships. */
+            new_ship = TRUE;
             ship = unused_ship;
         } else {
             /* Make sure we have enough memory for new ship. */
@@ -5705,7 +5711,7 @@ void do_TRANSFER_command(void) {
 
 void do_UNLOAD_command(void) {
     int i, found, item_count, recovering_home_planet, alien_index;
-    long n, reb, current_pop;
+    long n, reb;
     struct nampla_data *alien_home_nampla;
 
     /* Get the ship. */
@@ -5835,7 +5841,6 @@ void do_UNLOAD_command(void) {
     nampla->item_quantity[CU] -= item_count;
     nampla->item_quantity[IU] -= item_count;
     nampla->IUs_to_install += item_count;
-    current_pop += item_count;
 
     log_string("Installation of ");
     log_int(item_count);

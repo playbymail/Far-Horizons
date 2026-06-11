@@ -695,6 +695,7 @@ int combat(int default_summary, int do_all_species, int num_species, int *sp_num
                 /* Check for spelling error. */
                 best_score = -9999;
                 next_best_score = -9999;
+                best_species_index = -1;
                 for (i = 0; i < galaxy.num_species; i++) {
                     if (*sp_name[i] == '\0') {
                         continue;
@@ -706,6 +707,12 @@ int combat(int default_summary, int do_all_species, int num_species, int *sp_num
                     } else if (n > next_best_score) {
                         next_best_score = n;
                     }
+                }
+
+                /* No named species was scored, so there is nothing to match. */
+                if (best_species_index < 0) {
+                    bad_species();
+                    continue;
                 }
 
                 name_length = strlen(sp_name[best_species_index]);
